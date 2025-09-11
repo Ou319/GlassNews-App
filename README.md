@@ -1,3 +1,13 @@
+Environment setup
+-----------------
+Create a `.env` file at project root with:
+
+```
+NEWS_API_KEY=YOUR_NEWSAPI_KEY
+```
+
+The app loads it via `flutter_dotenv` in `main.dart`.
+
 # app_flutter_news
 
 A new Flutter project.
