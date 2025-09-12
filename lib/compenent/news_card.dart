@@ -1,12 +1,15 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:app_flutter_news/model/news_models.dart';
+import 'package:app_flutter_news/constants/app_strings.dart';
+import 'package:app_flutter_news/constants/app_sizes.dart';
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({super.key, required this.article, this.cardIndex = 0});
+  const NewsCard({super.key, required this.article, this.cardIndex = 0, this.category, this.height});
 
   final Article article;
   final int cardIndex;
+  final String? category;
+  final double? height;
 
   // Modern color palette
   static const List<Color> _cardColors = [
@@ -27,22 +30,46 @@ class NewsCard extends StatelessWidget {
   }
 
   double _getCardRotation() {
-    // Slight rotation for stacked card effect
-    final rotations = [-0.02, 0.015, -0.01, 0.025, -0.015];
-    return rotations[cardIndex % rotations.length];
+    // Better rotation system: current card straight, others with subtle rotation
+    if (cardIndex == 0) return 0.0; // Current card - no rotation
+    
+    // More subtle rotations for background cards
+    final rotations = [-AppSizes.rotationM, AppSizes.rotationS, -AppSizes.rotationL, 0.014, -0.01, 0.016];
+    return rotations[(cardIndex - 1) % rotations.length];
+  }
+
+  Color _getCategoryColor() {
+    if (category == null) return const Color(0xFFFF6B35); // Default orange
+    
+    final categoryColors = {
+      'general': const Color(0xFF4CAF50),     // Green
+      'business': const Color(0xFF2196F3),    // Blue
+      'entertainment': const Color(0xFFE91E63), // Pink
+      'health': const Color(0xFF00BCD4),      // Cyan
+      'science': const Color(0xFF9C27B0),     // Purple
+      'sports': const Color(0xFFFF9800),      // Orange
+      'technology': const Color(0xFF607D8B),  // Blue Grey
+    };
+    
+    return categoryColors[category] ?? const Color(0xFFFF6B35);
+  }
+
+  String _getCategoryDisplayName() {
+    if (category == null) return AppStrings.hotBadge;
+    return category![0].toUpperCase() + category!.substring(1);
   }
 
   String _formatTimeAgo() {
-    if (article.publishedAt == null) return 'Updated just now';
+    if (article.publishedAt == null) return AppStrings.justNow;
     
     final now = DateTime.now();
     final diff = now.difference(article.publishedAt!);
     
-    if (diff.inMinutes < 1) return 'Updated just now';
-    if (diff.inMinutes < 60) return 'Updated ${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return 'Updated ${diff.inHours}h ago';
-    if (diff.inDays < 7) return 'Updated ${diff.inDays}d ago';
-    return 'Updated ${diff.inDays ~/ 7}w ago';
+    if (diff.inMinutes < 1) return AppStrings.justNow;
+    if (diff.inMinutes < 60) return AppStrings.minutesAgo.replaceAll('{minutes}', diff.inMinutes.toString());
+    if (diff.inHours < 24) return AppStrings.hoursAgo.replaceAll('{hours}', diff.inHours.toString());
+    if (diff.inDays < 7) return AppStrings.daysAgo.replaceAll('{days}', diff.inDays.toString());
+    return AppStrings.weeksAgo.replaceAll('{weeks}', (diff.inDays ~/ 7).toString());
   }
 
   @override
@@ -53,92 +80,101 @@ class NewsCard extends StatelessWidget {
     return Transform.rotate(
       angle: rotation,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: EdgeInsets.zero,
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           color: cardColor,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppSizes.radiusXXXL),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 24,
-              spreadRadius: 0,
-              offset: const Offset(0, 8),
+              color: Colors.black.withOpacity(AppSizes.opacityS),
+              blurRadius: AppSizes.blurL,
+              spreadRadius: AppSizes.shadowSpread,
+              offset: const Offset(0, AppSizes.shadowOffset),
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 8,
-              spreadRadius: 0,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(AppSizes.opacityS),
+              blurRadius: AppSizes.blurS,
+              spreadRadius: AppSizes.shadowSpread,
+              offset: const Offset(0, AppSizes.shadowOffset),
             ),
           ],
         ),
+        child: Stack(
+          children: [
+            // Main content area
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.all(AppSizes.cardPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // LIVE badge and time
+              // Category badge and time
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacingM, vertical: AppSizes.spacingXS),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF4444),
-                      borderRadius: BorderRadius.circular(12),
+                      color: _getCategoryColor(),
+                                borderRadius: BorderRadius.circular(AppSizes.radiusM),
                     ),
-                    child: const Text(
-                      'LIVE',
-                      style: TextStyle(
+                    child: Text(
+                      _getCategoryDisplayName(),
+                      style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                                  fontSize: AppSizes.fontSizeS,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                                  letterSpacing: AppSizes.letterSpacingS,
                       ),
                     ),
                   ),
                   const Spacer(),
                   Icon(
                     Icons.access_time,
-                    size: 14,
-                    color: Colors.black.withOpacity(0.6),
+                              size: AppSizes.iconS,
+                              color: Colors.black.withOpacity(AppSizes.opacityL),
                   ),
-                  const SizedBox(width: 4),
+                            const SizedBox(width: AppSizes.spacingXS),
                   Text(
                     _formatTimeAgo(),
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
-                      fontSize: 12,
+                                color: Colors.black.withOpacity(AppSizes.opacityL),
+                                fontSize: AppSizes.fontSizeS,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               // Title
               Text(
                 (article.title ?? 'Untitled').trim(),
                 style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 24,
                   fontWeight: FontWeight.w800,
                   height: 1.2,
                   color: Colors.black87,
                 ),
-                maxLines: 3,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
 
               // Time indicator
               Text(
                 _formatTimeAgo(),
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.6),
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               // Publisher info and follow button
               if (article.source?.name != null) ...[
@@ -180,81 +216,98 @@ class NewsCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Spacer(),
-                    // Follow button
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                        'Follow',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
               ],
 
-              // Description
+                        // Description (compact) - takes remaining space
               if (article.description != null) ...[
-                Text(
-                  article.description!.trim(),
+                          Expanded(
+                            child: Text(
+                              article.description!.trim(),
                   style: TextStyle(
-                    fontSize: 16,
-                    height: 1.4,
-                    color: Colors.black.withOpacity(0.8),
+                    fontSize: 14,
+                    height: 1.3,
+                    color: Colors.black.withOpacity(0.7),
                     fontWeight: FontWeight.w400,
                   ),
-                  maxLines: 4,
+                              maxLines: 8,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 24),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
               ],
-
-              const Spacer(),
-
-              // Action buttons
-              Row(
-                children: [
-                  _ActionButton(
-                    icon: Icons.thumb_up_outlined,
-                    onTap: () {
-                      // Handle like
-                    },
-                  ),
-                  const SizedBox(width: 16),
-                  _ActionButton(
-                    icon: Icons.bookmark_border,
-                    onTap: () {
-                      // Handle bookmark
-                    },
-                  ),
-                  const Spacer(),
-                  _ActionButton(
-                    icon: Icons.share_outlined,
-                    onTap: () {
-                      // Handle share
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            
+            // Small action buttons in bottom-right corner
+            _CompactActionButtons(),
+          ],
         ),
       ),
     );
   }
 }
 
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
+class _CompactActionButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: AppSizes.spacingL,
+      right: AppSizes.spacingL,
+          child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.spacingM,
+          vertical: AppSizes.spacingS,
+        ),
+            decoration: BoxDecoration(
+          color: Colors.white.withOpacity(AppSizes.opacityXL),
+          borderRadius: BorderRadius.circular(AppSizes.radiusXL),
+              boxShadow: [
+                BoxShadow(
+              color: Colors.black.withOpacity(AppSizes.opacityS),
+              blurRadius: AppSizes.blurM,
+              spreadRadius: AppSizes.shadowSpread,
+              offset: const Offset(0, AppSizes.shadowOffset),
+                ),
+              ],
+            ),
+                          child: Row(
+          mainAxisSize: MainAxisSize.min,
+                children: [
+            _CompactActionButton(
+                    icon: Icons.thumb_up_outlined,
+                    onTap: () {
+                      // Handle like
+                    },
+                  ),
+            const SizedBox(width: AppSizes.spacingM),
+            _CompactActionButton(
+                    icon: Icons.bookmark_border,
+                    onTap: () {
+                      // Handle bookmark
+                    },
+                  ),
+            const SizedBox(width: AppSizes.spacingM),
+            _CompactActionButton(
+                    icon: Icons.share_outlined,
+                    onTap: () {
+                      // Handle share
+                    },
+                  ),
+                ],
+                          ),
+              ),
+    );
+  }
+}
+
+class _CompactActionButton extends StatelessWidget {
+  const _CompactActionButton({
     required this.icon,
     required this.onTap,
   });
@@ -267,16 +320,16 @@ class _ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 44,
-        height: 44,
+        width: AppSizes.containerXS,
+        height: AppSizes.containerXS,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(AppSizes.radiusXXL),
+          color: Colors.transparent,
         ),
         child: Icon(
           icon,
-          size: 20,
-          color: Colors.black.withOpacity(0.7),
+          size: AppSizes.iconL,
+          color: Colors.black.withOpacity(AppSizes.opacityL),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'routes/route_generator.dart';
 import 'routes/route_const.dart';
 import 'package:get/get.dart';
+import 'package:app_flutter_news/constants/app_strings.dart';
 
 /// Main entry point of the Flutter News App
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // App title and theme configuration
-      title: 'GlassNews App',
+      title: AppStrings.appTitle,
       debugShowCheckedModeBanner: false, // Remove debug banner
       
       // Theme configuration with glassmorphism colors
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         primaryColor: const Color(0xFF4A90E2),
         scaffoldBackgroundColor: const Color(0xFFE0F1FF),
-        fontFamily: 'Roboto',
+        fontFamily: AppStrings.defaultFontFamily,
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF4A90E2),
           foregroundColor: Colors.white,
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       
       // Initial route - starts with splash screen
-      initialRoute: RouteConst.home,
+      initialRoute: RouteConst.search,
       
       // Route generation using RouteGenerator
       onGenerateRoute: RouteGenerator.generateRoute,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_flutter_news/compenent/safe_glassify.dart';
+import 'package:app_flutter_news/constants/app_strings.dart';
+import 'package:app_flutter_news/constants/app_sizes.dart';
 
 class SplaschScreen extends StatefulWidget {
   const SplaschScreen({super.key});
@@ -15,13 +17,13 @@ class _SplaschScreenState extends State<SplaschScreen> {
       backgroundColor: Colors.white,
       body: Center(
         child: FrostedGlass(
-          borderRadius: 40,
-          blur: 24,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          borderRadius: AppSizes.radiusCircle,
+          blur: AppSizes.blurL,
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacingXXL, vertical: AppSizes.spacingL),
           child: const Text(
-            'Glass',
+            AppStrings.splashTitle,
             style: TextStyle(
-              fontSize: 72,
+              fontSize: AppSizes.fontSizeHuge,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

@@ -5,6 +5,7 @@ import 'package:app_flutter_news/view/home/home_page.dart';
 import 'package:app_flutter_news/view/search/search_page.dart';
 import 'package:app_flutter_news/view/save/save_page.dart';
 import 'package:app_flutter_news/view/setting/setting_page.dart';
+import 'package:app_flutter_news/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 
@@ -39,12 +40,12 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          title: const Text('Error'),
+          title: const Text(AppStrings.errorTitle),
           backgroundColor: Colors.red,
         ),
         body: const Center(
           child: Text(
-            'ERROR: Route not found!',
+            AppStrings.errorRouteNotFound,
             style: TextStyle(fontSize: 18, color: Colors.red),
           ),
         ),

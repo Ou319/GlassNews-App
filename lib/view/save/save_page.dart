@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_flutter_news/constants/app_strings.dart';
 
 class SavePage extends StatelessWidget {
   const SavePage({super.key});
@@ -7,7 +8,7 @@ class SavePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Save'),
+        child: Text(AppStrings.saveLabel),
       ),
     );
   }
