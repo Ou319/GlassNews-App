@@ -40,13 +40,13 @@ GlassNews delivers a premium, fluid news experience:
 
 ### Home
 Category chips, spotlight/random card, swipable lists
-![Filter News](https://github.com/user-attachments/assets/4503958e-7779-4325-83f8-4e2b248d266e)
+![Home Page](https://github.com/user-attachments/assets/3a29366b-0f14-43a9-a815-b71e305f72c8)
 
 ### Search
 Lottie empty state, liquid‑glass filter in the input, reels cards
 
 **Filter the News:**
-![Filter](https://github.com/user-attachments/assets/4503958e-7779-4325-83f8-4e2b248d266e)
+![Filter News](https://github.com/user-attachments/assets/4503958e-7779-4325-83f8-4e2b248d266e)
 
 **Empty Search State:**
 ![Empty Search](https://github.com/user-attachments/assets/78f4afa1-942f-4400-9bf1-b2826781715b)
