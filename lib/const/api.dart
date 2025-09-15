@@ -1,6 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConst {
-  static const String baseUrl = 'https://newsapi.org/v2';
-  static const String apiKey = '4a2dc26c1a894f149be9b79e6cab9e98';
+  static String get baseUrl => dotenv.env['NEWSAPI_BASE_URL'] ?? 'https://newsapi.org/v2';
+  static String get apiKey => dotenv.env['NEWSAPI_KEY'] ?? '';
 }
 
 

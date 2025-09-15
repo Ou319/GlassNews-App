@@ -3,9 +3,12 @@ import 'routes/route_generator.dart';
 import 'routes/route_const.dart';
 import 'package:get/get.dart';
 import 'package:app_flutter_news/constants/app_strings.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Main entry point of the Flutter News App
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
