@@ -49,6 +49,19 @@ class Article {
       content: json['content'] as String?,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'source': source?.toJson(),
+      'author': author,
+      'title': title,
+      'description': description,
+      'url': url,
+      'urlToImage': urlToImage,
+      'publishedAt': publishedAt?.toIso8601String(),
+      'content': content,
+    };
+  }
 }
 
 class ArticleSource {
@@ -62,6 +75,13 @@ class ArticleSource {
       id: json['id'] as String?,
       name: json['name'] as String?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
   }
 }
 

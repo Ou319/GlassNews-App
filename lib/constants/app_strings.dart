@@ -59,7 +59,7 @@ class AppStrings {
   static const String accountSettings = 'Account';
 
   // Search Page
-  static const String searchTitle = 'Saved News';
+  static const String searchTitle = 'Search News';
   static const String searchPlaceholder = 'Search news';
   static const String searchHint = 'Search news';
   static const String noSearchResults = 'No search results found';

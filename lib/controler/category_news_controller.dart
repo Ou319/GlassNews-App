@@ -16,6 +16,7 @@ class CategoryNewsController extends GetxController {
   ];
 
   final RxString selectedCategory = 'general'.obs;
+  final RxString country = 'us'.obs;
   final RxBool loading = false.obs;
   final RxString error = ''.obs;
   final RxMap<String, List<Article>> categoryToArticles = <String, List<Article>>{}.obs;
@@ -37,7 +38,7 @@ class CategoryNewsController extends GetxController {
     try {
       final res = await _api.fetchTopHeadlines(
         category: category,
-        country: 'us',
+        country: country.value,
         pageSize: 20,
       );
       categoryToArticles[category] = res.articles;
@@ -46,6 +47,13 @@ class CategoryNewsController extends GetxController {
     } finally {
       loading.value = false;
     }
+  }
+
+  void updateCountry(String value) {
+    if (country.value == value) return;
+    country.value = value;
+    categoryToArticles.clear();
+    fetchForCategory(selectedCategory.value);
   }
 }
 

@@ -9,6 +9,7 @@ import 'package:app_flutter_news/constants/app_strings.dart';
 import 'package:app_flutter_news/constants/app_sizes.dart';
 import 'package:app_flutter_news/view/setting/setting_page.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:app_flutter_news/compenent/news_filter_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -120,6 +121,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   const Spacer(),
+                  // Filters button using same UX as Search (language/country/sort UI)
+                  NewsFilterButton.search(
+                    language: 'en',
+                    country: categories.country.value,
+                    sortBy: 'publishedAt',
+                    onApply: ({required language, required country, required sortBy}) {
+                      // Home uses top-headlines: apply country; language/sort are not used by this controller
+                      categories.updateCountry(country);
+                    },
+                    onReset: () {
+                      categories.updateCountry('us');
+                    },
+                  ),
+                  const SizedBox(width: AppSizes.spacingS),
                   // Menu button
                   GestureDetector(
                     onTap: () => _openSettings(context),

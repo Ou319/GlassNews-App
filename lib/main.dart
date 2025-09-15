@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       
       // Initial route - starts with splash screen
-      initialRoute: RouteConst.search,
+      initialRoute: RouteConst.splash,
       
       // Route generation using RouteGenerator
       onGenerateRoute: RouteGenerator.generateRoute,
