@@ -37,13 +37,10 @@ GlassNews delivers a premium, fluid news experience:
 
 ## Screens
 
-### Splash
-Black background with white Z logo and "Glass News" branding
-![Splash](https://github.com/user-attachments/assets/2d5062a6-321e-4056-9f2b-c59fc638255f)
 
 ### Home
 Category chips, spotlight/random card, swipable lists
-![Home](https://github.com/user-attachments/assets/4503958e-7779-4325-83f8-4e2b248d266e)
+![Filter News](https://github.com/user-attachments/assets/4503958e-7779-4325-83f8-4e2b248d266e)
 
 ### Search
 Lottie empty state, liquid‑glass filter in the input, reels cards
